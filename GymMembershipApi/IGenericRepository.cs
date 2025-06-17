@@ -1,6 +1,11 @@
-﻿namespace GymMembershipApi
+﻿namespace GymMembershipApi.Repositories
 {
-    public interface IGenericRepository
+    public interface IGenericRepository<T> where T : class
     {
+        Task<T?> GetByIdAsync(int id);
+        Task<IEnumerable<T>> GetAllAsync();
+        Task AddAsync(T entity);
+        void Delete(T entity);
+        void Update(T entity);
     }
 }
