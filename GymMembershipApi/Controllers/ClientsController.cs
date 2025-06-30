@@ -37,7 +37,25 @@ namespace GymMembershipApi.Controllers
             return Ok(client);
         }
 
-      
+    
+        [HttpPut("{id}")] 
+        public async Task<IActionResult> UpdateClient(int id, [FromBody] CreateClientDto clientDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            var updatedClient = await _clientService.UpdateClientAsync(id, clientDto);
+
+            if (updatedClient == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(updatedClient); 
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateClient([FromBody] CreateClientDto clientDto)
         {
