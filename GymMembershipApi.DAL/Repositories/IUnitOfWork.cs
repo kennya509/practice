@@ -1,4 +1,4 @@
-﻿using GymMembershipApi.Entities;
+﻿using GymMembershipApi.Domain.Entities;
 
 namespace GymMembershipApi.Repositories
 {

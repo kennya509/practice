@@ -1,4 +1,9 @@
-﻿using GymMembershipApi.Data;
+﻿using GymMembershipApi.DAL.Data;
+using GymMembershipApi.DAL.Entities; 
+using GymMembershipApi.DAL.Repositories;
+using GymMembershipApi.BLL.Services;
+using GymMembershipApi.BLL.DTOs;   
+using GymMembershipApi.BLL.Mappings;
 using Microsoft.EntityFrameworkCore;
 
 namespace GymMembershipApi.Repositories

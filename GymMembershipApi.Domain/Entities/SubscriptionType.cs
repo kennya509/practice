@@ -1,5 +1,5 @@
-﻿namespace GymMembershipApi.Entities
-{
+﻿namespace GymMembershipApi.Domain.Entities;
+
     public class SubscriptionType
     {
         public int Id { get; set; }
@@ -7,4 +7,3 @@
         public decimal Price { get; set; }
         public int DurationInDays { get; set; }
     }
-}

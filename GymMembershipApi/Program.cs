@@ -1,34 +1,32 @@
-using GymMembershipApi.Data;
-using GymMembershipApi.Repositories;
-using GymMembershipApi.Services;
+using GymMembershipApi.DAL.Data; 
+using GymMembershipApi.DAL.Repositories; 
+using GymMembershipApi.BLL.Services;
+using GymMembershipApi.BLL.Mappings;
 using Microsoft.EntityFrameworkCore;
 
 
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 
 builder.Services.AddControllers();
 
 
 builder.Services.AddDbContext<AppDbContext>(options =>
- 
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
+        b => b.MigrationsAssembly("GymMembershipApi.DAL")));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddAutoMapper(typeof(Program));
+builder.Services.AddAutoMapper(typeof(MappingProfile)); 
 builder.Services.AddScoped<IClientService, ClientService>();
 
 
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();

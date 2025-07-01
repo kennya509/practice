@@ -1,7 +1,7 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace GymMembershipApi.DTOs
-{
+namespace GymMembershipApi.Domain.DTOs;
+
     public class CreateClientDto
     {
         [Required]
@@ -16,4 +16,3 @@ namespace GymMembershipApi.DTOs
         [Phone]
         public string PhoneNumber { get; set; } = string.Empty;
     }
-}

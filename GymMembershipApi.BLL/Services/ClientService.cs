@@ -1,10 +1,9 @@
 ﻿using AutoMapper;
-using GymMembershipApi.DTOs;
-using GymMembershipApi.Entities;
-using GymMembershipApi.Repositories;
+namespace GymMembershipApi.Domain.DTOs; 
+namespace GymMembershipApi.Domain.Entities;
+namespace GymMembershipApi.Repositories;
 
-namespace GymMembershipApi.Services
-{
+namespace GymMembershipApi.BLL.Services;
     public class ClientService : IClientService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -85,4 +84,3 @@ namespace GymMembershipApi.Services
             return true;
         }
     }
-}
