@@ -8,5 +8,6 @@ namespace GymMembershipApi.Services
         Task<ClientDto?> GetClientByIdAsync(int id);
         Task<ClientDto> CreateClientAsync(CreateClientDto clientDto);
         Task<ClientDto?> UpdateClientAsync(int id, CreateClientDto clientDto);
+        Task<bool> DeleteClientAsync(int id);
     }
 }

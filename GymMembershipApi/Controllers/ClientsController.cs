@@ -56,6 +56,20 @@ namespace GymMembershipApi.Controllers
             return Ok(updatedClient); 
         }
 
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteClient(int id)
+        {
+            var success = await _clientService.DeleteClientAsync(id);
+
+            if (!success)
+            {
+                return NotFound(); 
+            }
+
+          
+            return NoContent();
+        }
+
         [HttpPost]
         public async Task<IActionResult> CreateClient([FromBody] CreateClientDto clientDto)
         {

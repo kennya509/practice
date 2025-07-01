@@ -69,5 +69,20 @@ namespace GymMembershipApi.Services
 
             return _mapper.Map<ClientDto>(existingClient);
         }
+        public async Task<bool> DeleteClientAsync(int id)
+        {
+            var clientToDelete = await _unitOfWork.Clients.GetByIdAsync(id);
+
+            if (clientToDelete == null)
+            {
+                return false;
+            }
+
+            _unitOfWork.Clients.Delete(clientToDelete);
+
+            await _unitOfWork.SaveChangesAsync();
+
+            return true;
+        }
     }
 }
