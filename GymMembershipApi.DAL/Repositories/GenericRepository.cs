@@ -1,13 +1,10 @@
 ﻿using GymMembershipApi.DAL.Data;
-using GymMembershipApi.DAL.Entities; 
-using GymMembershipApi.DAL.Repositories;
-using GymMembershipApi.BLL.Services;
-using GymMembershipApi.BLL.DTOs;   
-using GymMembershipApi.BLL.Mappings;
 using Microsoft.EntityFrameworkCore;
 
-namespace GymMembershipApi.Repositories
-{
+
+
+namespace GymMembershipApi.DAL.Repositories;
+
     public class GenericRepository<T> : IGenericRepository<T> where T : class
     {
         protected readonly AppDbContext _context;
@@ -44,4 +41,3 @@ namespace GymMembershipApi.Repositories
             _dbSet.Update(entity);
         }
     }
-}

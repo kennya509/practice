@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿namespace GymMembershipApi.API.Middleware;
+using System.Net;
 using System.Text.Json;
 
 public class ExceptionHandlingMiddleware

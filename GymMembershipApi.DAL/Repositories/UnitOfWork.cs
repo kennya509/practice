@@ -1,7 +1,7 @@
-﻿using GymMembershipApi.Data;
-using GymMembershipApi.Entities;
+﻿using GymMembershipApi.DAL.Data;
+using GymMembershipApi.DAL.Entities;
 
-namespace GymMembershipApi.Repositories
+namespace GymMembershipApi.DAL.Repositories
 {
     public class UnitOfWork : IUnitOfWork
     {
@@ -27,7 +27,6 @@ namespace GymMembershipApi.Repositories
         public void Dispose()
         {
             _context.Dispose();
-            GC.SuppressFinalize(this);
         }
     }
 }

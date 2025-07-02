@@ -1,4 +1,4 @@
-﻿namespace GymMembershipApi.Repositories
+﻿namespace GymMembershipApi.DAL.Repositories
 {
     public interface IGenericRepository<T> where T : class
     {

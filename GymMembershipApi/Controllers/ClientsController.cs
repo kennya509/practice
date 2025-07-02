@@ -1,8 +1,8 @@
-﻿using GymMembershipApi.DTOs;
-using GymMembershipApi.Services;
+﻿using GymMembershipApi.BLL.Services;
+using GymMembershipApi.BLL.DTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace GymMembershipApi.Controllers
+namespace practice.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -15,7 +15,7 @@ namespace GymMembershipApi.Controllers
             _clientService = clientService;
         }
 
-      
+        
         [HttpGet]
         public async Task<IActionResult> GetAllClients([FromQuery] int pageNumber = 1, [FromQuery] int pageSize = 10)
         {
@@ -23,39 +23,49 @@ namespace GymMembershipApi.Controllers
             return Ok(clients);
         }
 
-      
+        
         [HttpGet("{id}")]
         public async Task<IActionResult> GetClientById(int id)
         {
             var client = await _clientService.GetClientByIdAsync(id);
-
-            if (client == null)
-            {
-                return NotFound();
-            }
-
-            return Ok(client);
+            return client == null ? NotFound() : Ok(client);
         }
 
-    
-        [HttpPut("{id}")] 
-        public async Task<IActionResult> UpdateClient(int id, [FromBody] CreateClientDto clientDto)
+        
+        [HttpPost]
+        public async Task<IActionResult> CreateClient([FromBody] CreateClientDto createClientDto)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+            var createdClient = await _clientService.CreateClientAsync(createClientDto);
+            return CreatedAtAction(nameof(GetClientById), new { id = createdClient.Id }, createdClient);
+        }
+
+       
+        [HttpPut("{id}")]
+        public async Task<IActionResult> UpdateClient(int id, [FromBody] UpdateClientDto updateDto)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest(ModelState);
             }
 
-            var updatedClient = await _clientService.UpdateClientAsync(id, clientDto);
+            var updatedClient = await _clientService.UpdateClientAsync(id, updateDto);
 
             if (updatedClient == null)
             {
-                return NotFound();
+                return NotFound($"Client with ID {id} not found.");
             }
 
-            return Ok(updatedClient); 
+            return Ok(updatedClient);
         }
 
+        
+        
+        
+        
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteClient(int id)
         {
@@ -63,24 +73,10 @@ namespace GymMembershipApi.Controllers
 
             if (!success)
             {
-                return NotFound(); 
+                return NotFound($"Client with ID {id} not found.");
             }
 
-          
-            return NoContent();
-        }
-
-        [HttpPost]
-        public async Task<IActionResult> CreateClient([FromBody] CreateClientDto clientDto)
-        {
-            if (!ModelState.IsValid)
-            {
-                return BadRequest(ModelState);
-            }
-
-            var createdClient = await _clientService.CreateClientAsync(clientDto);
-
-            return CreatedAtAction(nameof(GetClientById), new { id = createdClient.Id }, createdClient);
+            return NoContent(); 
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿namespace GymMembershipApi.Domain.DTOs
+﻿namespace GymMembershipApi.BLL.DTOs
 {
     public class ClientDto
     {

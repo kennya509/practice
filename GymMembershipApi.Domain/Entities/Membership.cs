@@ -1,5 +1,4 @@
 ﻿namespace GymMembershipApi.Domain.Entities;
-
     public class Membership
     {
         public int Id { get; set; }

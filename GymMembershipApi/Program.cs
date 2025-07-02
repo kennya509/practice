@@ -1,26 +1,21 @@
-using GymMembershipApi.DAL.Data; 
-using GymMembershipApi.DAL.Repositories; 
+
+using GymMembershipApi.API.Middleware;
+using GymMembershipApi.BLL.Implementations;
 using GymMembershipApi.BLL.Services;
-using GymMembershipApi.BLL.Mappings;
+using GymMembershipApi.DAL.Data;
+using GymMembershipApi.DAL.Repositories;
 using Microsoft.EntityFrameworkCore;
-
-
 
 var builder = WebApplication.CreateBuilder(args);
 
-
-builder.Services.AddControllers();
-
-
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection"),
-        b => b.MigrationsAssembly("GymMembershipApi.DAL")));
+    options.UseNpgsql(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-builder.Services.AddAutoMapper(typeof(MappingProfile)); 
 builder.Services.AddScoped<IClientService, ClientService>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
-
+builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
@@ -34,11 +29,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseMiddleware<ExceptionHandlingMiddleware>();
-
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

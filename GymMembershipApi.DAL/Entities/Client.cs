@@ -1,4 +1,4 @@
-﻿namespace GymMembershipApi.Domain.Entities
+﻿namespace GymMembershipApi.DAL.Entities
 {
     public class Client
     {

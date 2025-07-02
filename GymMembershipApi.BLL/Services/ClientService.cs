@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
-namespace GymMembershipApi.Domain.DTOs; 
-namespace GymMembershipApi.Domain.Entities;
-namespace GymMembershipApi.Repositories;
+using GymMembershipApi.BLL.Services;
+using GymMembershipApi.DAL.Repositories;
+using GymMembershipApi.BLL.DTOs;
+using GymMembershipApi.DAL.Entities;
 
-namespace GymMembershipApi.BLL.Services;
+namespace GymMembershipApi.BLL.Implementations // Важливо! Я змінив namespace
+{
     public class ClientService : IClientService
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -17,70 +19,48 @@ namespace GymMembershipApi.BLL.Services;
 
         public async Task<ClientDto> CreateClientAsync(CreateClientDto clientDto)
         {
-            var clientEntity = _mapper.Map<Client>(clientDto);
-
-            await _unitOfWork.Clients.AddAsync(clientEntity);
-
+            var client = _mapper.Map<Client>(clientDto);
+            await _unitOfWork.Clients.AddAsync(client);
             await _unitOfWork.SaveChangesAsync();
-
-            var resultDto = _mapper.Map<ClientDto>(clientEntity);
-            return resultDto;
+            return _mapper.Map<ClientDto>(client);
         }
 
         public async Task<IEnumerable<ClientDto>> GetAllClientsAsync(int pageNumber, int pageSize)
         {
-            var clientEntities = await _unitOfWork.Clients.GetAllAsync();
-
-            var pagedClients = clientEntities
-                .Skip((pageNumber - 1) * pageSize)
-                .Take(pageSize);
-
-            var resultDtos = _mapper.Map<IEnumerable<ClientDto>>(pagedClients);
-            return resultDtos;
+            var clients = await _unitOfWork.Clients.GetAllAsync();
+            var pagedClients = clients.Skip((pageNumber - 1) * pageSize).Take(pageSize);
+            return _mapper.Map<IEnumerable<ClientDto>>(pagedClients);
         }
 
         public async Task<ClientDto?> GetClientByIdAsync(int id)
         {
-            var clientEntity = await _unitOfWork.Clients.GetByIdAsync(id);
-            if (clientEntity == null)
-            {
-                return null; 
-            }
-
-            var resultDto = _mapper.Map<ClientDto>(clientEntity);
-            return resultDto;
+            var client = await _unitOfWork.Clients.GetByIdAsync(id);
+            return _mapper.Map<ClientDto>(client);
         }
-        public async Task<ClientDto?> UpdateClientAsync(int id, CreateClientDto clientDto)
+        public async Task<ClientDto?> UpdateClientAsync(int id, UpdateClientDto updateDto)
         {
-            var existingClient = await _unitOfWork.Clients.GetByIdAsync(id);
-
-            if (existingClient == null)
-            {
-                return null;
-            }
+            var client = await _unitOfWork.Clients.GetByIdAsync(id);
+            if (client == null) return null;
 
             
-            _mapper.Map(clientDto, existingClient);
+            client.FirstName = updateDto.FirstName;
+            client.LastName = updateDto.LastName;
+            client.PhoneNumber = updateDto.PhoneNumber;
 
-            _unitOfWork.Clients.Update(existingClient);
-
+            _unitOfWork.Clients.Update(client);
             await _unitOfWork.SaveChangesAsync();
 
-            return _mapper.Map<ClientDto>(existingClient);
+            return _mapper.Map<ClientDto>(client);
         }
+
         public async Task<bool> DeleteClientAsync(int id)
         {
-            var clientToDelete = await _unitOfWork.Clients.GetByIdAsync(id);
+            var client = await _unitOfWork.Clients.GetByIdAsync(id);
+            if (client == null) return false;
 
-            if (clientToDelete == null)
-            {
-                return false;
-            }
-
-            _unitOfWork.Clients.Delete(clientToDelete);
-
+            _unitOfWork.Clients.Delete(client);
             await _unitOfWork.SaveChangesAsync();
-
             return true;
         }
     }
+}
